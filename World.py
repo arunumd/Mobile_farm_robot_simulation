@@ -1,6 +1,19 @@
 #!/usr/bin/env python3
 import json
 import math
+import re
+import operator
+import time
+
+from functools import reduce
+
+
+def get_location(nested_dict=None, keys_list=None):
+    if keys_list is None:
+        keys_list = []
+    if nested_dict is None:
+        nested_dict = {}
+    return reduce(operator.getitem, keys_list, nested_dict)
 
 
 # TODO Create docstrings
@@ -40,6 +53,23 @@ class World:
         for item in self.path_lengths:
             print(item)
 
+    def decrypt_location(self, location="FBR8"):
+        print(location)
+        if re.match(r'(\s)*charger(\s)*', location, re.IGNORECASE):
+            return self.data['world']['charger']['location']
+        elif re.match(r'(\s)*FBR(\s)*\d+', location, re.IGNORECASE):
+            output = "{0:0=2d}".format(int((re.findall(r'\d+', location))[0]))
+            key = ["world", "fields", "field-b", "rows", "row-" + str(output), "location"]
+            return get_location(self.data, key)
+        else:
+            output = "{0:0=2d}".format(int((re.findall(r'\d+', location))[0]))
+            key = ["world", "fields", "field-a", "rows", "row-" + str(output), "location"]
+            return get_location(self.data, key)
+
 
 if __name__ == '__main__':
-    World()
+    start = time.time()
+    print(World().decrypt_location())
+    end = time.time()
+    time_taken = end - start
+    print('Time: ', time_taken)
