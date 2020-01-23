@@ -1,29 +1,41 @@
+#!/usr/bin/env python3
 import re
 
 
 # TODO Create docstrings
-class Input:
-    def user_input(input = 'plant CARROTS in field A row 10'):
-        # Command to check if task is for field A
-        field_a_command = re.compile(r'goto field A row \d')
-        output = field_a_command.search(input)
-        if 0 <= int(output) < 20:
-            pass
-            # TODO : Write code for A row command here
-            # Should update task queue in task.py
+def user_input(task='      go to    field A row 10'):
+    # Command to check if task is for field A
+    if re.match(r'(\s)*go(\s)*to(\s)*field(\s)*A(\s)*row(\s)*\d+(\s)*',
+                task, re.IGNORECASE):
+        output = int((re.findall(r'\d+', task))[0])
+        if 0 <= output < 20:
+            return "FAR" + str(output), "N/A"
 
-        # Command to check if task is for field B
-        field_b_command = re.compile(r'goto field B row \d')
-        output = field_b_command.search(input)
-        if 0 <= int(output) < 20:
-            pass
-            # TODO : Write code for B row command here
-            # Should update task queue in task.py
+    # Command to check if task is for field B
+    if re.match(r'(\s)*go(\s)*to(\s)*field(\s)*B(\s)*row(\s)*\d+(\s)*',
+                task, re.IGNORECASE):
+        output = int((re.findall(r'\d+', task))[0])
+        if 0 <= output < 20:
+            return "FBR" + str(output), "N/A"
 
-        # Command to check if task is for charger
-        charger_command = re.compile(r'goto charger')
-        output = charger_command.search(input)
-        if output is not None:
-            pass
-            # TODO : Write code for charger command here
-            # Should update task queue in task.py
+    # Command to check if task is to plant crops in field A
+    if re.match(r'(\s)*plant(\s)*\w*(\s)*in(\s)*field(\s)*A(\s)*row(\s)*\d+(\s)*',
+                task, re.IGNORECASE):
+        cleaned_input = (re.split(r'\s', task.strip()))
+        return "FAR" + str(cleaned_input[6]), cleaned_input[1]
+
+    # Command to check if task is to plant crops in field B
+    if re.match(r'(\s)*plant(\s)*\w*(\s)*in(\s)*field(\s)*B(\s)*row(\s)*\d+(\s)*',
+                task, re.IGNORECASE):
+        cleaned_input = (re.split(r'\s', task.strip()))
+        return "FBR" + str(cleaned_input[6]), cleaned_input[1]
+
+    # Command to check if task is for charger
+    if re.match(r'(\s)*go(\s)*to(\s)*charger(\s)*', task, re.IGNORECASE):
+        return "Charger", "N/A"
+
+    else:
+        return "Invalid task", "N/A"
+
+
+print(user_input())
