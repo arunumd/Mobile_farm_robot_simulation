@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
-import pprint
-import queue
 import re
 
 from collections import deque
-
 from World import World
 
 
-def set_locations(current_location="Charger",
+def set_locations(current_location="FBR01",
                   next_location="FAR15"):
     def get_tuple(location="FBR01"):
         # Code for current location matches
-        if re.match(r'FBR\d', location):
+        if re.match(r'FBR\d+', location):
             location_tuple = ("FBR", int((re.findall(r'\d+', location))[0]))
-        elif re.match(r'FAR\d', location):
+        elif re.match(r'FAR\d+', location):
             location_tuple = ("FAR", int((re.findall(r'\d+', location))[0]))
         else:
             location_tuple = ("Charger", 0)
@@ -22,14 +19,14 @@ def set_locations(current_location="Charger",
 
     start = get_tuple(current_location)
     finish = get_tuple(next_location)
+    print(start, finish)
     return start + finish
 
 
 class Path:
-    def __init__(self):
+    def __init__(self, world):
         self.path = ()
-        self.world = World()
-        pprint.pprint(self.world)
+        self.world = world
 
     def find_path(self, locations=()):
         present_location = list(locations[0:2])
@@ -82,12 +79,12 @@ class Path:
                     path_to_charger = deque([origin + " " + str(i)
                                              for i in (range(current_coordinate, 19))])
                     path_to_charger += deque(
-                        [("PTH05" if origin == 'FAR' else "PTH04") + " " + str(i) for i in (range(10, -1, -1))])
+                        [("PTH05" if origin == 'FAR' else "PTH04") + " " + str(i) for i in (range(10, 0, -1))])
                 else:
                     path_to_charger = deque([origin + " " + str(i)
-                                             for i in (range(current_coordinate + 1, 0, -1))])
+                                             for i in (range(current_coordinate, 0, -1))])
                     path_to_charger += deque(
-                        [("PTH03" if origin == 'FAR' else "PTH01") + " " + str(i) for i in (range(10, -1, -1))])
+                        [("PTH03" if origin == 'FAR' else "PTH01") + " " + str(i) for i in (range(10, 0, -1))])
 
                 if origin == 'FAR':
                     return path_to_charger + deque(["PTH00" + " " + str(i) for i in (range(10, -1, -1))])
@@ -137,7 +134,7 @@ class Path:
 
 
 if __name__ == "__main__":
-    path0 = Path()
+    path0 = Path(World())
     print(path0.world.path_lengths)
     path1 = path0.find_path(set_locations())
     while path1:
