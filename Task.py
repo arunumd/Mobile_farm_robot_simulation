@@ -1,4 +1,5 @@
-import queue
+#!/usr/bin/env python3
+from collections import deque
 
 
 class TaskManager:
@@ -8,16 +9,16 @@ class TaskManager:
         -----------
         Initializes a FIFO queue to infinite size
         """
-        self.FIFOQueue = queue.Queue(maxsize=0)
+        self.FIFOQueue = deque([], 42)
 
-    def add_task(self, task='goto charger'):
+    def add_task(self, task='FBR10'):
         """
         Description
         -----------
         Function to add tasks from user input to the task manager queue
         :param task: the user input string representing a task
         """
-        self.FIFOQueue.put(task)
+        self.FIFOQueue.append(task)
 
     def assign_task(self):
         """
@@ -26,7 +27,7 @@ class TaskManager:
         Assigns tasks from the user input to the queue in the form of tuples
 
         :returns the next task for execution"""
-        return self.FIFOQueue.get()
+        return self.FIFOQueue.popleft()
 
     def get_status(self):
         """
@@ -36,4 +37,4 @@ class TaskManager:
         available in the queue
 
         :returns true if empty; false if not empty"""
-        return self.FIFOQueue.empty()
+        return not self.FIFOQueue
