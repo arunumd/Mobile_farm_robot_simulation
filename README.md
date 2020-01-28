@@ -17,4 +17,35 @@ ranging from development of path planning algorithms, robotic simulation, deep l
 ## License
 
 This project is release under the MIT License
-                                                   
+
+## Project running instructions
+
+On your Linux/ Mac or Windows machine run the following commands in a terminal or command prompt :
+```
+git clone https://github.com/arunumd/Rover.git
+cd Rover
+python3 Launcher.py
+```
+
+Later, please follow the on screen instructions for giving the commanded positions/ tasks to the rover.
+
+## Commanded positions and/ or tasks for the rover
+
+The rover can perform two classes of tasks based on the user input. The classes are broadly classified as :
+- go to tasks; and
+- plant a crop 'ABC' task
+
+The tasks are not space and case sensitive. For example the following are all acceptable formats :
+```
+gotofieldArow3
+go TO Field A row 3
+goto fieldA row3
+```
+
+or
+
+```
+goTo charger
+gotO CharGER
+gotoCharger
+```
