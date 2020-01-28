@@ -1,4 +1,4 @@
-### A Python based simple navigation algorithm for a mobile robotic rover in a hydrophonic lab
+# A Python based simple navigation algorithm for a mobile robotic rover in a hydrophonic lab
 
 The Rover  in this project is a fictional point robot that is charecterized as a mobile agent which can move between target locations based on path
 waypoints. The paths and target locations are predefined in a `.json` file available in the `maps` directory in this project. The robot can handle
