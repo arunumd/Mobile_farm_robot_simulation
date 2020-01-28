@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 import json
 import math
-import re
 import operator
+import re
 import time
-import pprint
-
 from functools import reduce
 
 
 def get_location(nested_dict=None, keys_list=None):
+    """
+    Description
+    -----------
+    Static function to get a value of a nested key from a nested dictionary
+    :param nested_dict: Nested dictionary from which the nested value is to be retrieved
+    :param keys_list: The verbose keys corresponding to the desired value being passed in
+                     as a python list of list
+    :return: The expected value corresponding to the provided nested keys
+    """
     if keys_list is None:
         keys_list = []
     if nested_dict is None:
@@ -18,6 +25,14 @@ def get_location(nested_dict=None, keys_list=None):
 
 
 def update_crops(nested_dict=None, keys_list=None, crop="CARROTS"):
+    """
+    Description
+    -----------
+    Static function to update a value of a nested key in a nested dictionary
+    :param nested_dict: Nested dictionary in which the nested value is to be updated
+    :param keys_list: The verbose keys corresponding to the desired value being passed in
+                     as a python list of list
+    """
     if keys_list is None:
         keys_list = []
     if nested_dict is None:
@@ -25,14 +40,15 @@ def update_crops(nested_dict=None, keys_list=None, crop="CARROTS"):
     get_location(nested_dict, keys_list[:-1])[keys_list[-1]] = crop
 
 
-# TODO Create docstrings
 class World:
     def __init__(self):
         """
         Description
         -----------
-        Function to load a json world map to a nested dictionary
-        :param self.json_path: Input json file path for loading world map
+        Function to load a json world map to a nested dictionary. The file is repeatedly attempted to
+        be opened and loaded if the file does not exist in the given location. The initializer function
+        also calculates the lengths of all paths and fields using the data available in the predefined
+        world map. The lengths of irregular paths are calculated using the euclidean distance formula
         """
         self.json_path = './maps/coding_challenge.json'
         status = 0
@@ -40,7 +56,6 @@ class World:
             try:
                 with open(self.json_path) as json_file:
                     self.data = json.load(json_file)
-                    pprint.pprint(self.data)
             except FileNotFoundError:
                 print("The file  ./maps/coding_challenge.json does not exist\n"
                       "Retrying to load the same file again")
@@ -60,10 +75,16 @@ class World:
             self.path_lengths.append(
                 10 * math.sqrt((math.pow(path[1]['waypoint-0'][0] - path[1]['waypoint-1'][0], 2)) +
                                (math.pow(path[1]['waypoint-0'][1] - path[1]['waypoint-1'][1], 2))))
-        for item in self.path_lengths:
-            print(item)
 
     def decrypt_location(self, location="Charger"):
+        """
+        Description
+        -----------
+        Member function to return the exact location coordinates of a specific location of the robot based
+        on path waypoint numbers and row numbers in the two given fields
+        :param location: The location of the robot in the form of a string. Example: Charger, FBR10, etc.
+        :return: The location coordinates as a string. Example: [300, 500], [1000, 50], etc.
+        """
         if re.match(r'(\s)*charger(\s)*', location, re.IGNORECASE):
             return "[charger]", self.data['world']['charger']['location']
         elif re.match(r'(\s)*PTH(\s)*\d+', location, re.IGNORECASE):
@@ -81,6 +102,13 @@ class World:
                                                                                                      location_key)
 
     def update_world(self, location="FBR8", crop="CARROTS"):
+        """
+        Description
+        -----------
+        Member function to plant a crop in the world file at the desired field and row location
+        :param location: An encoded name of the field and row location passed in as a string
+        :param crop: The name of the crop to be planted passed in as a string
+        """
         if re.match(r'(\s)*FBR(\s)*\d+', location, re.IGNORECASE):
             output = "{0:0=2d}".format(int((re.findall(r'\d+', location))[0]))
             crop_key = ["world", "fields", "field-b", "rows", "row-" + str(output), "crop"]
@@ -91,9 +119,15 @@ class World:
             update_crops(self.data, crop_key, crop)
 
     def write_to_world_file(self):
-        world_file = open(self.json_path, "w+")
-        world_file.write(json.dumps(self.data))
-        world_file.close()
+        """
+        Description
+        -----------
+        Member function to write the current world file to the given json file. The function simply opens the json
+        file which is initialized by the __init__ function and then writes the stored dictionary to the file and
+        closes it
+        """
+        with open(self.json_path, "w+") as world_file:
+            world_file.write(json.dumps(self.data))
 
 
 if __name__ == '__main__':

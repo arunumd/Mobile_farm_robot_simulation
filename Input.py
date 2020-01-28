@@ -2,8 +2,17 @@
 import re
 
 
-# TODO Create docstrings
 def user_input(task='      go to    field A row 10'):
+    """
+    Description
+    -----------
+    Static function to convert an irregular user input into a regular encoded input for the path
+    planning algorithm. The function returns an "Invalid task" if the commanded robot position is
+    out of scope of the world file
+    :param task: An irregular user input which may be of irregular spacing and case.
+                 Example: go to fieLd a ROw 10
+    :return: A regularized encoded string of the commanded location for the robot. Example: FAR10
+    """
     # Command to check if task is for field A
     if re.match(r'(\s)*go(\s)*to(\s)*field(\s)*A(\s)*row(\s)*\d+(\s)*',
                 task, re.IGNORECASE):

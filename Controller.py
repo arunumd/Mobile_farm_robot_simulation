@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 import threading
 
-
 from Input import user_input
 from Path import *
-from Task import TaskManager
 from Rover import Rover
+from Task import TaskManager
+from World import World
 
 
 class Controller:
-    def __init__(self, world):
-        self.world = world
+    def __init__(self):
+        """
+        Description:
+        -----------
+        Initializer function for controller class. The function initializes the initial position of the robot
+        through user input. The function also initializes other variables necessary for the functioning of the class.
+        The world file is being initialized as a composition object from the json file path. It is a nested dictionary
+        """
+        self.world = World()
         self.starting_location = "FAR10"
         self.future_location = "Charger"
         self.current_task = "N/A"
@@ -24,6 +31,17 @@ class Controller:
                 break
 
     def trigger_nodes(self):
+        """
+        Description:
+        -----------
+        This function is the lifeline of the whole pipeline. It does the essential task of integrating all
+        other modules together, viz-a-viz., Input, Path, Task, World, etc. to get the rover up and running.
+        The function helps to get the next robot location through user input as a string and then run the
+        Input module for parsing its meaning. Later, the input module allocates an encoded task to the Task
+        module if the command was a valid command. The task module allocates the tasks to the path module
+        sequentially and appends the found path to the Rover class instance. The Rover class then takes care
+        of the job of walking the rover through every individual waypoint in sequence for every one second.
+        """
         task_manager = TaskManager()
         path_planner = Path(self.world)
         rover = Rover(self.world, self.starting_location)
@@ -47,5 +65,5 @@ class Controller:
 
 
 if __name__ == "__main__":
-    controller = Controller(World())
+    controller = Controller()
     controller.trigger_nodes()

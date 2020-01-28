@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 import re
-
 from collections import deque
+
 from World import World
 
 
 def set_locations(current_location="FBR01",
                   next_location="Charger"):
+    """Description:
+       -----------
+       The following lines of code convert a string containing destination type and location
+       into a tuple of string and integer. The string is the destination type and integer is
+       the location. Example "FBR01" as (("FBR"),(01))
+    :param current_location: Current location of the robot as a string
+    :param next_location: Next location of the robot as a string
+    :return: A concatenated tuple of current location and next location
+    """
+
     def get_tuple(location="FBR01"):
         # Code for current location matches
         if re.match(r'FBR\d+', location):
@@ -19,25 +29,41 @@ def set_locations(current_location="FBR01",
 
     start = get_tuple(current_location)
     finish = get_tuple(next_location)
-    print(start, finish)
     return start + finish
 
 
 class Path:
+    """Description:
+       -----------
+       The class "Path" is useful for finding a valid path from any valid start location
+       to any other end location within the scope of the given world file
+    """
+
     def __init__(self, world):
+        """The init function saves a local version of the passed in world file. Since the
+        file is passed by reference, any changes made here will update the changes everywhere
+        :param world: The world file in .json format provided to our algorithm
+        """
         self.path = ()
         self.world = world
 
     def find_path(self, locations=()):
+        """
+        Description:
+        -----------
+        Function to find the shortest path between two locations for the rover. The path
+        is selected based on predefined possibilities selection based on euclidean distance.
+        :param locations: a concatenated tuple of locations as string and integer pairs
+        :return: a deque object of path waypoints as strings
+        """
         present_location = list(locations[0:2])
-        goal_location = list(locations[2:4])  # If start and goals are in the same fields
-        print(present_location, goal_location)
-        if goal_location[0] == present_location[0]:
-            """
-            Description:
-            -----------
-            Condition to find path when the goal node and current node are in the same field
-            """
+        goal_location = list(locations[2:4])
+        print(locations)
+        # If robot's present location and commanded goto location are exactly the same
+        if present_location == goal_location:
+            return deque([goal_location[0] + " " + str(goal_location[1])])
+        # If start and goals are in the same fields
+        elif goal_location[0] == present_location[0]:
             if goal_location[0] == 'FBR' or goal_location[0] == 'FAR':
                 prefix = goal_location[0]
                 # Goal row is higher than present row
@@ -50,11 +76,22 @@ class Path:
 
         # If start and goals are in different fields
         elif (goal_location[0] == 'FAR' or 'FBR') and (present_location[0] == 'FAR' or 'FBR') and (
-                present_location[0] is not "Charger" and goal_location[0] is not "Charger"):
+                present_location[0] != "Charger" and goal_location[0] != "Charger"):
             prefix = present_location[0]
 
             # Going from field B to field A
             def path_b_to_a(current_coordinate=0, future_coordinate=0, prepend="FBR"):
+                """
+                Description:
+                -----------
+                Function to find the path between two fields A and B. In order to provide code reusability,
+                the task of going from field a to field b, is considered as inverse of going from field b to
+                field a. Accordingly the inputs are flipped and the output path is reversed to get the desired
+                path.
+                :param current_coordinate: The current row location in a field as an integer
+                :param future_coordinate: The next row location in the other field as an integer
+                :return: The path as a deque object of path waypoints as strings
+                """
                 path_ba = deque([prepend + " " + str(i)
                                  for i in (range(current_coordinate, 0, -1))])
                 prepend = 'PTH02'
@@ -85,6 +122,17 @@ class Path:
         else:
 
             def path_field_to_charger(current_coordinate=0, origin='FAR', option=0):
+                """
+                Description:
+                -----------
+                Function to find the path between a field and the charger. In order to provide code reusability,
+                the task of going from field a and field b to charger, is considered as inverse of going from charger
+                to field a and field b. Accordingly, the inputs are flipped and the output path is reversed to get the
+                desired path.
+                :param current_coordinate: The current row location in a field as an integer
+                :param origin: The origin field name of the robot
+                :return: The path as a deque object of path waypoints as strings
+                """
                 if option == 0:
                     path_to_charger = deque([origin + " " + str(i)
                                              for i in (range(current_coordinate, 19))])
@@ -102,7 +150,6 @@ class Path:
                     return path_to_charger
 
             if goal_location[0] == 'Charger' and (present_location[0] == 'FAR' or present_location[0] == 'FBR'):
-                print("start is field ", present_location, goal_location)
                 if present_location[0] == 'FAR':
                     # Go by path 5 if going by path 3 is longer
                     if self.world.path_lengths[3] + present_location[1] - 1 > \
@@ -128,7 +175,6 @@ class Path:
                         return final_path
 
             else:
-                print("start is charger ", present_location, goal_location)
                 if goal_location[0] == 'FAR':
                     if self.world.path_lengths[3] + goal_location[1] - 1 > \
                             self.world.path_lengths[5] + 19 - goal_location[1]:
