@@ -49,3 +49,11 @@ goTo charger
 gotO CharGER
 gotoCharger
 ```
+
+or
+
+```
+plantPoTaToESIn FielDB rOW14
+plantCABBAgE inField A row 5
+     plant RADDISH in fieldA row15
+```
