@@ -13,38 +13,36 @@ def user_input(task='      go to    field A row 10'):
                  Example: go to fieLd a ROw 10
     :return: A regularized encoded string of the commanded location for the robot. Example: FAR10
     """
-    # Command to check if task is for field A
-    if re.match(r'(\s)*go(\s)*to(\s)*field(\s)*A(\s)*row(\s)*\d+(\s)*',
-                task, re.IGNORECASE):
-        output = int((re.findall(r'\d+', task))[0])
-        if 0 <= output < 20:
-            return "FAR" + str(output), "N/A"
+    match_templates = [r'\s*go\s*to\s*field\s*A\s*row\s*(\d+)\s*',
+                       r'\s*go\s*to\s*field\s*B\s*row\s*(\d+)\s*',
+                       r'\s*plant\s*(.*?)\s*in\s*field\s*A\s*row\s*(\d+)\s*',
+                       r'\s*plant\s*(.*?)\s*in\s*field\s*B\s*row\s*(\d+)\s*',
+                       r'\s*go\s*to\s*charger\s*']
 
-    # Command to check if task is for field B
-    if re.match(r'(\s)*go(\s)*to(\s)*field(\s)*B(\s)*row(\s)*\d+(\s)*',
-                task, re.IGNORECASE):
-        output = int((re.findall(r'\d+', task))[0])
-        if 0 <= output < 20:
-            return "FBR" + str(output), "N/A"
+    # Condition to check if the robot has to go to somewhere in field A
+    match_state = re.match(match_templates[0], task, re.IGNORECASE)
+    if match_state is not None:
+        return "FAR" + str(match_state[1]), "N/A"
 
-    # Command to check if task is to plant crops in field A
-    if re.match(r'(\s)*plant(\s)*\w*(\s)*in(\s)*field(\s)*A(\s)*row(\s)*\d+(\s)*',
-                task, re.IGNORECASE):
-        cleaned_input = (re.split(r'\s', task.strip()))
-        return "FAR" + str(cleaned_input[6]), cleaned_input[1]
+    # Condition to check if the robot has to go to somewhere in field B
+    match_state = re.match(match_templates[1], task, re.IGNORECASE)
+    if match_state is not None:
+        return "FBR" + str(match_state[1]), "N/A"
 
-    # Command to check if task is to plant crops in field B
-    if re.match(r'(\s)*plant(\s)*\w*(\s)*in(\s)*field(\s)*B(\s)*row(\s)*\d+(\s)*',
-                task, re.IGNORECASE):
-        cleaned_input = (re.split(r'\s', task.strip()))
-        return "FBR" + str(cleaned_input[6]), cleaned_input[1]
+    # Condition to check if the robot has to plant some crop in field A
+    match_state = re.match(match_templates[2], task, re.IGNORECASE)
+    if match_state is not None:
+        return "FAR" + str(match_state[2]), match_state[1]
 
-    # Command to check if task is for charger
-    if re.match(r'(\s)*go(\s)*to(\s)*charger(\s)*', task, re.IGNORECASE):
+    # Condition to check if the robot has to plant some crop in field B
+    match_state = re.match(match_templates[3], task, re.IGNORECASE)
+    if match_state is not None:
+        return "FBR" + str(match_state[2]), match_state[1]
+
+    # Condition to check if the robot has to go to charger
+    match_state = re.match(match_templates[4], task, re.IGNORECASE)
+    if match_state is not None:
         return "Charger", "N/A"
 
-    else:
-        return "Invalid task", "N/A"
 
-
-print(user_input())
+print(user_input("go TO fieLDBRoW44"))
