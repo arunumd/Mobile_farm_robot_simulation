@@ -44,5 +44,8 @@ def user_input(task='      go to    field A row 10'):
     if match_state is not None:
         return "Charger", "N/A"
 
+    else:
+        return "Invalid task", "N/A"
+
 
 print(user_input("go TO fieLDBRoW44"))
