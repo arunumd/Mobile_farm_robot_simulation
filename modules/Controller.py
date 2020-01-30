@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import threading
 
-from Input import user_input
-from Path import *
-from Rover import Farmer
-from Task import TaskManager
-from World import Farm
+from modules.Input import user_input
+from modules.Path import *
+from modules.Rover import Farmer
+from modules.Task import TaskManager
+from modules.World import Farm
 
 
 class CommandCenter:

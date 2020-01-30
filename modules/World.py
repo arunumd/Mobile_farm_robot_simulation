@@ -29,6 +29,7 @@ def update_crops(nested_dict=None, keys_list=None, crop="CARROTS"):
     Description
     -----------
     Static function to update a value of a nested key in a nested dictionary
+    :param crop: The name of the crop that is to be planted in the specific location
     :param nested_dict: Nested dictionary in which the nested value is to be updated
     :param keys_list: The verbose keys corresponding to the desired value being passed in
                      as a python list of list
@@ -50,15 +51,15 @@ class Farm:
         also calculates the lengths of all paths and fields using the data available in the predefined
         farm map. The lengths of irregular paths are calculated using the euclidean distance formula
         """
-        self.json_path = './maps/coding_challenge.json'
+        self.json_path = ''
         status = 0
         while status == 0:
             try:
+                self.json_path = input("Please enter the world file path : ")
                 with open(self.json_path) as json_file:
                     self.data = json.load(json_file)
-            except FileNotFoundError:
-                print("The file  ./maps/coding_challenge.json does not exist\n"
-                      "Retrying to load the same file again")
+            except:
+                print("The said world file does not exist. Please enter a valid path again")
             else:
                 status = 1
 

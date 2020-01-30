@@ -4,7 +4,7 @@ import threading
 import time
 from collections import deque
 
-from World import Farm
+from modules.World import Farm
 
 
 class Farmer:

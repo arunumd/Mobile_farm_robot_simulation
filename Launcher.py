@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from Controller import CommandCenter
+from modules.Controller import CommandCenter
 
 
 def launch_environment():

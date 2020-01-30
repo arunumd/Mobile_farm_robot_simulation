@@ -2,7 +2,7 @@
 import re
 from collections import deque
 
-from World import Farm
+from modules.World import Farm
 
 
 def set_locations(current_location="FBR01",
