@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # A Python based simple navigation algorithm for a mobile robotic rover in a hydroponic lab
 
 The Farmer in this project is a fictional point robot that is characterized as a mobile agent which can move between target
