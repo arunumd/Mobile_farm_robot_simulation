@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.4" />
+<title>Controller API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>Controller</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">#!/usr/bin/env python3
+import threading
+
+from modules.Input import user_input
+from modules.Path import *
+from modules.Rover import Farmer
+from modules.Task import TaskManager
+from modules.World import Farm
+
+
+class CommandCenter:
+    def __init__(self):
+        &#34;&#34;&#34;
+        Description:
+        -----------
+        Initializer function for command_center class. The function initializes the initial position of the robot
+        through user input. The function also initializes other variables necessary for the functioning of the class.
+        The farm file is being initialized as a composition object from the json file path. It is a nested dictionary
+        &#34;&#34;&#34;
+        self.farm = Farm()
+        self.starting_location = &#34;FAR10&#34;
+        self.future_location = &#34;Charger&#34;
+        self.current_task = &#34;N/A&#34;
+        self.future_task = &#34;N/A&#34;
+        self.task_node = TaskManager()
+        self.path_planner = Planner(self.farm)
+        while True:
+            user_command = input(&#34;Please enter a valid starting location for the robot : &#34;)
+            self.starting_location = user_input(user_command)[0]
+            if self.starting_location != &#34;Invalid task&#34;:
+                break
+        self.farmer = Farmer(self.farm, self.starting_location)
+
+    def trigger_nodes(self):
+        &#34;&#34;&#34;
+        Description:
+        -----------
+        This function is the lifeline of the whole pipeline. It does the essential task of integrating all
+        other modules together, viz-a-viz., Input, Planner, Task, Farm, etc. to get the rover up and running.
+        The function helps to get the next robot location through user input as a string and then run the
+        Input module for parsing its meaning. Later, the input module allocates an encoded task to the Task
+        module if the command was a valid command. The task module allocates the tasks to the path module
+        sequentially and appends the found path to the Rover class instance. The Rover class then takes care
+        of the job of walking the rover through every individual waypoint in sequence for every one second.
+        &#34;&#34;&#34;
+        timer_thread = threading.Thread(target=self.farmer.walk)
+        timer_thread.daemon = True
+        timer_thread.start()
+        while True:
+            status = 0
+            while status == 0:
+                next_task = input(&#34;Please enter a valid next task for the robot : &#34;)
+                task_location = user_input(next_task)
+                if task_location[0] != &#34;Invalid task&#34;:
+                    self.future_location = task_location[0]
+                    self.future_task = task_location[1]
+                    status = 1
+            self.task_node.add_task(self.future_location)
+            planned_path = self.path_planner.find_path(set_locations(self.starting_location,
+                                                                     self.task_node.assign_task()))
+            if self.future_task != &#34;N/A&#34;:
+                planned_path.append(self.future_task)
+            self.farmer.append_path(planned_path)
+            self.starting_location = self.future_location
+
+
+if __name__ == &#34;__main__&#34;:
+    command_center = CommandCenter()
+    command_center.trigger_nodes()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="Controller.CommandCenter"><code class="flex name class">
+<span>class <span class="ident">CommandCenter</span></span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="description">Description:</h2>
+<p>Initializer function for command_center class. The function initializes the initial position of the robot
+through user input. The function also initializes other variables necessary for the functioning of the class.
+The farm file is being initialized as a composition object from the json file path. It is a nested dictionary</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CommandCenter:
+    def __init__(self):
+        &#34;&#34;&#34;
+        Description:
+        -----------
+        Initializer function for command_center class. The function initializes the initial position of the robot
+        through user input. The function also initializes other variables necessary for the functioning of the class.
+        The farm file is being initialized as a composition object from the json file path. It is a nested dictionary
+        &#34;&#34;&#34;
+        self.farm = Farm()
+        self.starting_location = &#34;FAR10&#34;
+        self.future_location = &#34;Charger&#34;
+        self.current_task = &#34;N/A&#34;
+        self.future_task = &#34;N/A&#34;
+        self.task_node = TaskManager()
+        self.path_planner = Planner(self.farm)
+        while True:
+            user_command = input(&#34;Please enter a valid starting location for the robot : &#34;)
+            self.starting_location = user_input(user_command)[0]
+            if self.starting_location != &#34;Invalid task&#34;:
+                break
+        self.farmer = Farmer(self.farm, self.starting_location)
+
+    def trigger_nodes(self):
+        &#34;&#34;&#34;
+        Description:
+        -----------
+        This function is the lifeline of the whole pipeline. It does the essential task of integrating all
+        other modules together, viz-a-viz., Input, Planner, Task, Farm, etc. to get the rover up and running.
+        The function helps to get the next robot location through user input as a string and then run the
+        Input module for parsing its meaning. Later, the input module allocates an encoded task to the Task
+        module if the command was a valid command. The task module allocates the tasks to the path module
+        sequentially and appends the found path to the Rover class instance. The Rover class then takes care
+        of the job of walking the rover through every individual waypoint in sequence for every one second.
+        &#34;&#34;&#34;
+        timer_thread = threading.Thread(target=self.farmer.walk)
+        timer_thread.daemon = True
+        timer_thread.start()
+        while True:
+            status = 0
+            while status == 0:
+                next_task = input(&#34;Please enter a valid next task for the robot : &#34;)
+                task_location = user_input(next_task)
+                if task_location[0] != &#34;Invalid task&#34;:
+                    self.future_location = task_location[0]
+                    self.future_task = task_location[1]
+                    status = 1
+            self.task_node.add_task(self.future_location)
+            planned_path = self.path_planner.find_path(set_locations(self.starting_location,
+                                                                     self.task_node.assign_task()))
+            if self.future_task != &#34;N/A&#34;:
+                planned_path.append(self.future_task)
+            self.farmer.append_path(planned_path)
+            self.starting_location = self.future_location</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="Controller.CommandCenter.trigger_nodes"><code class="name flex">
+<span>def <span class="ident">trigger_nodes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><h2 id="description">Description:</h2>
+<p>This function is the lifeline of the whole pipeline. It does the essential task of integrating all
+other modules together, viz-a-viz., Input, Planner, Task, Farm, etc. to get the rover up and running.
+The function helps to get the next robot location through user input as a string and then run the
+Input module for parsing its meaning. Later, the input module allocates an encoded task to the Task
+module if the command was a valid command. The task module allocates the tasks to the path module
+sequentially and appends the found path to the Rover class instance. The Rover class then takes care
+of the job of walking the rover through every individual waypoint in sequence for every one second.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def trigger_nodes(self):
+    &#34;&#34;&#34;
+    Description:
+    -----------
+    This function is the lifeline of the whole pipeline. It does the essential task of integrating all
+    other modules together, viz-a-viz., Input, Planner, Task, Farm, etc. to get the rover up and running.
+    The function helps to get the next robot location through user input as a string and then run the
+    Input module for parsing its meaning. Later, the input module allocates an encoded task to the Task
+    module if the command was a valid command. The task module allocates the tasks to the path module
+    sequentially and appends the found path to the Rover class instance. The Rover class then takes care
+    of the job of walking the rover through every individual waypoint in sequence for every one second.
+    &#34;&#34;&#34;
+    timer_thread = threading.Thread(target=self.farmer.walk)
+    timer_thread.daemon = True
+    timer_thread.start()
+    while True:
+        status = 0
+        while status == 0:
+            next_task = input(&#34;Please enter a valid next task for the robot : &#34;)
+            task_location = user_input(next_task)
+            if task_location[0] != &#34;Invalid task&#34;:
+                self.future_location = task_location[0]
+                self.future_task = task_location[1]
+                status = 1
+        self.task_node.add_task(self.future_location)
+        planned_path = self.path_planner.find_path(set_locations(self.starting_location,
+                                                                 self.task_node.assign_task()))
+        if self.future_task != &#34;N/A&#34;:
+            planned_path.append(self.future_task)
+        self.farmer.append_path(planned_path)
+        self.starting_location = self.future_location</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="Controller.CommandCenter" href="#Controller.CommandCenter">CommandCenter</a></code></h4>
+<ul class="">
+<li><code><a title="Controller.CommandCenter.trigger_nodes" href="#Controller.CommandCenter.trigger_nodes">trigger_nodes</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.4</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
