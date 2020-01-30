@@ -28,7 +28,7 @@ This project is release under the MIT License
 
 On your Linux/ Mac or Windows machine run the following commands in a terminal or command prompt :
 ```
-git clone https://github.com/arunumd/Farmer.git
+git clone https://github.com/arunumd/Rover.git
 cd Rover
 python3 Launcher.py
 ```
