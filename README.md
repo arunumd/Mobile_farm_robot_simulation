@@ -1,4 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![BCH compliance](https://bettercodehub.com/edge/badge/arunumd/Rover?branch=master)](https://bettercodehub.com/)
 
 # A Python based simple navigation algorithm for a mobile robotic rover in a hydroponic lab
 
