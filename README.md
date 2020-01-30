@@ -10,8 +10,9 @@ directory in this project. The robot can handle various tasks ranging from :
 - going to a commanded row location in a cropland (a.k.a field in this project);
 
 The user can also ask the robot to plant a specific crop in a specific row of a field through the commandline. The robot goes
-to every target location by the shortest path using a euclidean distance based heuristic. The robot's navigation is characterized
-as one step for every second.
+to every target location by the shortest path using a euclidean distance based heuristic. The robot's navigation is characterized as one step for every second. The picture below shows an imaginary view of the whole setup. The dotted lines represent various paths connecting different locations of the farm with other locations (farm fields, charging station, etc.).
+
+![The setup](description/problem_scenario.png)
 
 ## About the Author
 
