@@ -4,20 +4,20 @@ import threading
 import time
 from collections import deque
 
-from World import World
+from World import Farm
 
 
-class Rover:
-    def __init__(self, world, initial_location="FBR01"):
+class Farmer:
+    def __init__(self, farm, initial_location="FBR01"):
         """
         Description
         -----------
         Initializer function to initialize the robot at a commanded initial position
-        :param world: An instantiation of the World class passed in as a Python object
+        :param farm: An instantiation of the Farm class passed in as a Python object
         :param initial_location: The initial position of the robot being passed in from external location
         """
         self.rover_location = [0, 0]
-        self.world = world
+        self.world = farm
         self.path = deque([], 1000)
         self.time_interval = 1.0
         self.rover_location = initial_location
@@ -61,7 +61,7 @@ class Rover:
 
 
 if __name__ == "__main__":
-    rover = Rover(World())
+    rover = Farmer(Farm())
     timerThread = threading.Thread(target=rover.walk)
     timerThread.start()
     rover.path.append("FBR10")

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-from Controller import Controller
+from Controller import CommandCenter
 
 
 def launch_environment():
     print("At any time if you would like to exit the algorithm, then please type 'Ctrl' + 'C'"
           "in the console")
-    controller = Controller()
-    controller.trigger_nodes()
+    command_center = CommandCenter()
+    command_center.trigger_nodes()
 
 
 if __name__ == "__main__":

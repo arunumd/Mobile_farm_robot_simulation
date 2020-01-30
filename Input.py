@@ -8,7 +8,7 @@ def user_input(task='      go to    field A row 10'):
     -----------
     Static function to convert an irregular user input into a regular encoded input for the path
     planning algorithm. The function returns an "Invalid task" if the commanded robot position is
-    out of scope of the world file
+    out of scope of the farm file
     :param task: An irregular user input which may be of irregular spacing and case.
                  Example: go to fieLd a ROw 10
     :return: A regularized encoded string of the commanded location for the robot. Example: FAR10
@@ -46,6 +46,3 @@ def user_input(task='      go to    field A row 10'):
 
     else:
         return "Invalid task", "N/A"
-
-
-print(user_input("go TO fieLDBRoW44"))

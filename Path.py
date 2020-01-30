@@ -2,16 +2,17 @@
 import re
 from collections import deque
 
-from World import World
+from World import Farm
 
 
 def set_locations(current_location="FBR01",
                   next_location="Charger"):
-    """Description:
-       -----------
-       The following lines of code convert a string containing destination type and location
-       into a tuple of string and integer. The string is the destination type and integer is
-       the location. Example "FBR01" as (("FBR"),(01))
+    """
+    Description:
+    -----------
+    The following lines of code convert a string containing destination type and location
+    into a tuple of string and integer. The string is the destination type and integer is
+    the location. Example "FBR01" as (("FBR"),(01))
     :param current_location: Current location of the robot as a string
     :param next_location: Next location of the robot as a string
     :return: A concatenated tuple of current location and next location
@@ -32,20 +33,21 @@ def set_locations(current_location="FBR01",
     return start + finish
 
 
-class Path:
-    """Description:
-       -----------
-       The class "Path" is useful for finding a valid path from any valid start location
-       to any other end location within the scope of the given world file
+class Planner:
+    """
+    Description:
+    -----------
+    The class "Planner" is useful for finding a valid path from any valid start location
+    to any other end location within the scope of the given farm file
     """
 
-    def __init__(self, world):
-        """The init function saves a local version of the passed in world file. Since the
+    def __init__(self, farm):
+        """The init function saves a local version of the passed in farm file. Since the
         file is passed by reference, any changes made here will update the changes everywhere
-        :param world: The world file in .json format provided to our algorithm
+        :param farm: The farm file in .json format provided to our algorithm
         """
         self.path = ()
-        self.world = world
+        self.world = farm
 
     def find_path(self, locations=()):
         """
@@ -58,7 +60,6 @@ class Path:
         """
         present_location = list(locations[0:2])
         goal_location = list(locations[2:4])
-        print(locations)
         # If robot's present location and commanded goto location are exactly the same
         if present_location == goal_location:
             return deque([goal_location[0] + " " + str(goal_location[1])])
@@ -88,6 +89,7 @@ class Path:
                 the task of going from field a to field b, is considered as inverse of going from field b to
                 field a. Accordingly the inputs are flipped and the output path is reversed to get the desired
                 path.
+                :param prepend: The prefix name that represents the field name and row name
                 :param current_coordinate: The current row location in a field as an integer
                 :param future_coordinate: The next row location in the other field as an integer
                 :return: The path as a deque object of path waypoints as strings
@@ -104,14 +106,12 @@ class Path:
                                          for i in (range(current_coordinate, future_coordinate - 1, -1))]))
 
             if goal_location[0] == 'FAR':
-                print(present_location, goal_location)
                 final_path = path_b_to_a(current_coordinate=present_location[1],
                                          future_coordinate=goal_location[1], prepend=prefix)
                 final_path.popleft()
                 return final_path
                 # Going from field A to field B
             else:
-                print(present_location, goal_location)
                 final_path = path_b_to_a(current_coordinate=goal_location[1],
                                          future_coordinate=present_location[1])
                 final_path.reverse()
@@ -129,6 +129,7 @@ class Path:
                 the task of going from field a and field b to charger, is considered as inverse of going from charger
                 to field a and field b. Accordingly, the inputs are flipped and the output path is reversed to get the
                 desired path.
+                :param option: A simple mode selection switch based on value
                 :param current_coordinate: The current row location in a field as an integer
                 :param origin: The origin field name of the robot
                 :return: The path as a deque object of path waypoints as strings
@@ -202,7 +203,7 @@ class Path:
 
 
 if __name__ == "__main__":
-    path0 = Path(World())
+    path0 = Planner(Farm())
     print(path0.world.path_lengths)
     path1 = path0.find_path(set_locations())
     while path1:

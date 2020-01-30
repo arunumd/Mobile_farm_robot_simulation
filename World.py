@@ -40,15 +40,15 @@ def update_crops(nested_dict=None, keys_list=None, crop="CARROTS"):
     get_location(nested_dict, keys_list[:-1])[keys_list[-1]] = crop
 
 
-class World:
+class Farm:
     def __init__(self):
         """
         Description
         -----------
-        Function to load a json world map to a nested dictionary. The file is repeatedly attempted to
+        Function to load a json farm map to a nested dictionary. The file is repeatedly attempted to
         be opened and loaded if the file does not exist in the given location. The initializer function
         also calculates the lengths of all paths and fields using the data available in the predefined
-        world map. The lengths of irregular paths are calculated using the euclidean distance formula
+        farm map. The lengths of irregular paths are calculated using the euclidean distance formula
         """
         self.json_path = './maps/coding_challenge.json'
         status = 0
@@ -105,7 +105,7 @@ class World:
         """
         Description
         -----------
-        Member function to plant a crop in the world file at the desired field and row location
+        Member function to plant a crop in the farm file at the desired field and row location
         :param location: An encoded name of the field and row location passed in as a string
         :param crop: The name of the crop to be planted passed in as a string
         """
@@ -122,7 +122,7 @@ class World:
         """
         Description
         -----------
-        Member function to write the current world file to the given json file. The function simply opens the json
+        Member function to write the current farm file to the given json file. The function simply opens the json
         file which is initialized by the __init__ function and then writes the stored dictionary to the file and
         closes it
         """
@@ -132,7 +132,7 @@ class World:
 
 if __name__ == '__main__':
     start = time.time()
-    print(World().decrypt_location())
+    print(Farm().decrypt_location())
     end = time.time()
     time_taken = end - start
     print('Time: ', time_taken)
