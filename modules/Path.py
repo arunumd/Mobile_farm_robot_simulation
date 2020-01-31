@@ -94,8 +94,11 @@ class Planner:
                 :param future_coordinate: The next row location in the other field as an integer
                 :return: The path as a deque object of path waypoints as strings
                 """
-                path_ba = deque([prepend + " " + str(i)
+                if current_coordinate != 0:
+                    path_ba = deque([prepend + " " + str(i)
                                  for i in (range(current_coordinate, 0, -1))])
+                else:
+                    path_ba = deque([prepend + " " + str(0)])
                 prepend = 'PTH02'
                 current_coordinate = 0
                 path_ba += (deque([prepend + " " + str(i)
@@ -135,18 +138,24 @@ class Planner:
                 :return: The path as a deque object of path waypoints as strings
                 """
                 if option == 0:
-                    path_to_charger = deque([origin + " " + str(i)
-                                             for i in (range(current_coordinate, 19))])
+                    if current_coordinate != 20:
+                        path_to_charger = deque([origin + " " + str(i)
+                                             for i in (range(current_coordinate, 20))])
+                    else:
+                        path_to_charger = deque([origin] + " " + str(20))
                     path_to_charger += deque(
-                        [("PTH05" if origin == 'FAR' else "PTH04") + " " + str(i) for i in (range(10, -1, -1))])
+                        [("PTH05" if origin == 'FAR' else "PTH04") + " " + str(i) for i in (range(9, -1, -1))])
                 else:
-                    path_to_charger = deque([origin + " " + str(i)
-                                             for i in (range(current_coordinate, 0, -1))])
+                    if current_coordinate != 0:
+                        path_to_charger = deque([origin + " " + str(i)
+                                             for i in (range(current_coordinate, -1, -1))])
+                    else:
+                        path_to_charger = deque([origin + " " + str(0)])
                     path_to_charger += deque(
-                        [("PTH03" if origin == 'FAR' else "PTH01") + " " + str(i) for i in (range(10, -1, -1))])
+                        [("PTH03" if origin == 'FAR' else "PTH01") + " " + str(i) for i in (range(9, -1, -1))])
 
                 if origin == 'FAR':
-                    return path_to_charger + deque(["PTH00" + " " + str(i) for i in (range(10, -1, -1))])
+                    return path_to_charger + deque(["PTH00" + " " + str(i) for i in (range(9, -1, -1))])
                 else:
                     return path_to_charger
 
